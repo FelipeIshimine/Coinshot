@@ -1,0 +1,12 @@
+[submodule "Packages/Common"]
+	path = Packages/Common
+	url = git@github.com:FelipeIshimine/com.Ishimine.Common.git
+[submodule "Packages/ScriptableSettings"]
+	path = Packages/ScriptableSettings
+	url = git@github.com:FelipeIshimine/com.Ishimine.ScriptableSettings.git
+[submodule "Packages/GameStateMachine"]
+	path = Packages/GameStateMachine
+	url = git@github.com:FelipeIshimine/GameStateMachine.git
+[submodule "Packages/RuntimeScriptableSingleton"]
+	path = Packages/RuntimeScriptableSingleton
+	url = git@github.com:FelipeIshimine/FelipeIshimine-RuntimeScriptableSingleton.git
