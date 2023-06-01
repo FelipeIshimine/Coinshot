@@ -11,7 +11,8 @@ public class CharacterPhysicsController : MonoBehaviour
 
    [Header("Ground")]
    [SerializeField] private float groundedSpeed = 8;
-   
+   [SerializeField] private float groundedStopSmooth = .5f;
+   private float _groundedStopVel;
    [Header("Air")]
    [SerializeField] private float airSpeed = 5;
    [SerializeField] private float airDrag = .5f;
@@ -81,18 +82,14 @@ public class CharacterPhysicsController : MonoBehaviour
 
    private void HorizontalMovement(float speed)
    {
-      if (MoveInput.x > 0)
-      {
-         var vel = Rb.velocity;
+      var vel = Rb.velocity;
+      if (MoveInput.x == 0)
+         vel.x = Mathf.SmoothDamp(vel.x, 0, ref _groundedStopVel, groundedStopSmooth);
+      else if (MoveInput.x > 0)
          vel.x = Mathf.Max(vel.x, speed * MoveInput.x);
-         Rb.velocity = vel;
-      }
       else if (MoveInput.x < 0)
-      {
-         var vel = Rb.velocity;
          vel.x = Mathf.Min(vel.x, speed * MoveInput.x);
-         Rb.velocity = vel;
-      }
+      Rb.velocity = vel;
    }
 
    private void DescentSlope()
@@ -231,10 +228,13 @@ public class CharacterPhysicsController : MonoBehaviour
       Debug.Log($"JUMP:{jumpVelocity}");
       if (State.IsGrounded)
       {
+         Debug.Log("A");
          _jumping = true;
          var vel = new Vector2(Rb.velocity.x, jumpVelocity);
          Rb.velocity = vel;
       }
+      else
+         Debug.Log("B");
    }
 }
 

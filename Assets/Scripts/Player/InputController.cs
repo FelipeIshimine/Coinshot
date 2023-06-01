@@ -35,6 +35,7 @@ public class InputController : MonoBehaviour, ActionMap.IInteractionActions, Act
 
     public void SetController(ControllerMode controllerMode)
     {
+        if(_actionMap == null) return;
         mode = controllerMode;
         switch (controllerMode)
         {
@@ -96,6 +97,8 @@ public class InputController : MonoBehaviour, ActionMap.IInteractionActions, Act
     }
 
 
+    private void OnValidate() => SetController(mode);
+
     private void OnEnable()
     {
         _cam = Camera.main;
@@ -121,10 +124,21 @@ public class InputController : MonoBehaviour, ActionMap.IInteractionActions, Act
   
     public void OnPush(InputAction.CallbackContext context)
     {
+
         if (context.performed)
             player.StartPush();
         else
             player.StopPush();
+
+        if (player.IsPushing)
+        {
+            var value = context.ReadValue<float>();
+            Debug.Log($"Push:{value}");
+            player.SetPushIntensity(value);
+        }
+        else
+            player.SetPushIntensity(0);
+
     }
     
     public void OnPull(InputAction.CallbackContext context)
@@ -133,6 +147,15 @@ public class InputController : MonoBehaviour, ActionMap.IInteractionActions, Act
             player.StartPull();
         else
             player.StopPull();
+        
+        if (player.IsPulling)
+        {
+            var value = context.ReadValue<float>();
+            Debug.Log($"Pull:{value}");
+            player.SetPullIntensity(value);
+        }
+        else
+            player.SetPullIntensity(0);
     }
 
     public void OnJump(InputAction.CallbackContext context)
@@ -149,24 +172,24 @@ public class InputController : MonoBehaviour, ActionMap.IInteractionActions, Act
 
             var mousePosition = context.ReadValue<Vector2>();
             var worldPost = _cam.orthographic?_cam.ScreenToWorldPoint(mousePosition):_cam.GetWorldPositionOnPlane(mousePosition,0);
-            var diff = (worldPost - frog.tonguePivot.transform.position);
-            var dir = diff.normalized * Mathf.Clamp01(diff.magnitude / frog.cameraTargetMaxDistance);
-            frog.SetLookDirection(dir);
+            var diff = (worldPost - player.GetCenterOfMass());
+            var dir = diff.normalized * Mathf.Clamp01(diff.magnitude / player.RadarRadius);
+            player.SetLookDirection(diff.normalized);
         }
         else
         {
             if(context.performed)
-                frog.SetLookDirection(context.ReadValue<Vector2>());
+                player.SetLookDirection(context.ReadValue<Vector2>());
             else
-                frog.SetLookDirection(Vector2.zero);
+                player.SetLookDirection(Vector2.zero);
         }
     }
 
     public void OnMoveDirection(InputAction.CallbackContext context)
     {
         if (context.performed)
-            frog.SetMoveInput(context.ReadValue<Vector2>());
+            player.SetMoveInput(context.ReadValue<Vector2>());
         else
-            frog.SetMoveInput(Vector2.zero);
+            player.SetMoveInput(Vector2.zero);
     }
 }

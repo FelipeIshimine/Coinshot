@@ -294,12 +294,12 @@ public partial class @ActionMap: IInputActionCollection2, IDisposable
             ""actions"": [
                 {
                     ""name"": ""Push"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""d49fd63a-ae89-440d-b670-f0835a5e240b"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 },
                 {
                     ""name"": ""Jump"",
@@ -312,12 +312,12 @@ public partial class @ActionMap: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""Pull"",
-                    ""type"": ""Button"",
+                    ""type"": ""Value"",
                     ""id"": ""17c5779c-ff67-49b0-9b49-43fddcf4be14"",
-                    ""expectedControlType"": ""Button"",
+                    ""expectedControlType"": ""Axis"",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
